@@ -1,0 +1,2509 @@
+local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/pwrsk/dh/source"))()
+
+local window1 = engine.new({
+    text = "pwrsk's hub<3",
+    size = UDim2.new(300, 200),
+})
+
+window1.open()
+
+local tab1 = window1.new({
+    text = "Main",
+})
+
+local tab2 = window1.new({
+    text = "ESP",
+})
+
+local tab3 = window1.new({
+    text = "Local PLayer",
+})
+
+local tab4 = window1.new({
+    text = "Fun",
+})
+
+local tab5 = window1.new({
+    text = "Other",
+})
+
+local button1 = tab5.new("button", {
+    text = "IY Recoded",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/pwrsk/FE/main/IY'))()
+end)
+
+local button1 = tab5.new("button", {
+    text = "TSB Legit",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/pwrsk/tsballinone/main/tsballinone"))()
+end)
+
+local button1 = tab5.new("button", {
+    text = "Purple Sky",
+})
+button1.event:Connect(function()
+    c = script:Clone()
+c.Parent = game.Lighting
+s = Instance.new("Sky")
+s.Name = "loltroll"
+s.SkyboxBk = "http://www.roblox.com/asset/?id=16888843486" 
+s.SkyboxDn = "http://www.roblox.com/asset/?id=16888845693"
+s.SkyboxFt = "http://www.roblox.com/asset/?id=16888848245"
+s.SkyboxLf = "http://www.roblox.com/asset/?id=16888850949"
+s.SkyboxRt = "http://www.roblox.com/asset/?id=16888854243"
+s.SkyboxUp = "http://www.roblox.com/asset/?id=16888857144"
+s.Parent = game.Lighting
+game.Lighting.TimeOfDay = 0.5
+game.Lighting.ClockTime = 16
+game.Lighting.Brightness = 5
+end)
+
+local player = game.Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+local switchActivated = false
+local savedPosition
+
+local function teleportPlayerToCoordinates(coordinates)
+    if player.Character then
+        savedPosition = player.Character.HumanoidRootPart.Position
+        player.Character:SetPrimaryPartCFrame(CFrame.new(coordinates))
+    end
+end
+
+local button1 = tab5.new("button", {
+    text = "MotionBlur",
+})
+
+local motionBlurEnabled = false
+
+local function toggleMotionBlur(enabled)
+    if enabled then
+        local CurrentCamera = game.Workspace.CurrentCamera
+        local Blur = CurrentCamera:FindFirstChild("Blur")
+        local Last = CurrentCamera.CFrame.lookVector
+        local AbyssSettings = {
+            MotionBlur = {
+                Enabled = true,
+                BlurAmount = 100
+            }
+        }
+
+        if not Blur then
+            Blur = Instance.new("BlurEffect")
+            Blur.Parent = CurrentCamera
+            Blur.Size = 0
+        end
+
+        game:GetService("RunService").RenderStepped:Connect(function()
+            if AbyssSettings.MotionBlur.Enabled then
+                Blur.Size = math.abs((CurrentCamera.CFrame.lookVector - Last).Magnitude) * AbyssSettings.MotionBlur.BlurAmount
+                Last = CurrentCamera.CFrame.lookVector
+            end
+        end)
+    else
+        local CurrentCamera = game.Workspace.CurrentCamera
+        local Blur = CurrentCamera:FindFirstChild("Blur")
+        if Blur then
+            Blur:Destroy()
+        end
+    end
+end
+
+button1.event:Connect(function()
+    motionBlurEnabled = not motionBlurEnabled
+    toggleMotionBlur(motionBlurEnabled)
+end)
+
+local switch1 = tab5.new("switch", {
+    text = "AFK"
+})
+switch1.set(false)
+
+switch1.event:Connect(function(afk)
+    switchActivated = afk
+
+    if switchActivated then
+        teleportPlayerToCoordinates(Vector3.new(100000, 1010, 100000))
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(100, 1, 100)
+        part.Position = Vector3.new(100000, 999, 100000)
+        part.Anchored = true
+        part.BrickColor = BrickColor.Black()
+        part.Parent = game.Workspace
+    else
+        if savedPosition then
+            player.Character:SetPrimaryPartCFrame(CFrame.new(savedPosition))
+        end
+    end
+end)
+
+local switch1 = tab5.new("switch", {
+    text = "afk?.."
+})
+switch1.set(false)
+
+switch1.event:Connect(function(afk2)
+    switchActivated = afk2
+
+    if switchActivated then
+        teleportPlayerToCoordinates(Vector3.new(100000000, 1010, 100000000))
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(100, 1, 100)
+        part.Position = Vector3.new(100000000, 999, 100000000)
+        part.Anchored = true
+        part.BrickColor = BrickColor.Black()
+        part.Parent = game.Workspace
+    else
+        if savedPosition then
+            player.Character:SetPrimaryPartCFrame(CFrame.new(savedPosition))
+        end
+    end
+end)
+
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+local switch1 = tab5.new("switch", {
+    text = "Auto Pickup Money (DH)";
+})
+switch1.set(false)
+
+local isActive = false
+
+local function getMoneyAroundMe()
+    if not humanoidRootPart then return end
+
+    for _, money in ipairs(game.Workspace.Ignored.Drop:GetChildren()) do
+        if money.Name == "MoneyDrop" and (money.Position - humanoidRootPart.Position).magnitude <= 20 then
+            money.CFrame = humanoidRootPart.CFrame
+            fireclickdetector(money.ClickDetector)
+            wait(0.1)
+        end
+    end
+end
+
+local function toggleAutoPickup(state)
+    isActive = state
+    if isActive then
+        while isActive do
+            getMoneyAroundMe()
+            wait(0.1)
+        end
+    end
+end
+
+switch1.event:Connect(function(amoney)
+    toggleAutoPickup(amoney)
+end)
+
+local teleportLocations = {
+    ["Mask"] = Vector3.new(597, 50, -264),
+    ["Mid-High Armor"] = Vector3.new(-934, -27, 565),
+    ["Double Barrel"] = Vector3.new(-1042, 22, -257),
+    ["Weapon Shop #1"] = Vector3.new(493, 49, -627),
+    ["Weapon Shop #2"] = Vector3.new(-585, 9, -748),
+    ["RPG"] = Vector3.new(111, -25, -271),
+    ["Chicken"] = Vector3.new(-327, 24, -296),
+    ["Fire Armor"] = Vector3.new(-934, -1, 148),
+    ["R6"] = Vector3.new(537, 5, -254),
+    ["Bank"] = Vector3.new(-481, 40, -284)
+}
+
+local dropdown1 = tab5.new("dropdown", {
+    text = "DH Teleports",
+})
+
+for locationName, _ in pairs(teleportLocations) do
+    dropdown1.new(locationName)
+end
+
+dropdown1.event:Connect(function(name)
+    local player = game.Players.LocalPlayer
+    if teleportLocations[name] then
+        player.Character:MoveTo(teleportLocations[name])
+    end
+end)
+
+
+local button1 = tab1.new("button", {
+    text = "Anti Aim",
+})
+button1.event:Connect(function()
+local players = game:GetService("Players")
+
+local function setPlatformStandTrue()
+    for _, player in ipairs(players:GetPlayers()) do
+        local character = player.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.PlatformStand = true
+            end
+        end
+    end
+end
+
+setPlatformStandTrue()
+
+wait(0.1)
+
+local players = game:GetService("Players")
+
+local localPlayer = players.LocalPlayer
+
+if localPlayer then
+    local character = localPlayer.Character
+    if character then
+        local animateScript = character:FindFirstChild("Animate")
+        if animateScript and animateScript:IsA("LocalScript") then
+            animateScript.Disabled = true
+        end
+    end
+end
+
+wait(0.1)
+
+local players = game:GetService("Players")
+
+local function setPlatformStandTrue()
+    for _, player in ipairs(players:GetPlayers()) do
+        local character = player.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.PlatformStand = false
+            end
+        end
+    end
+end
+
+
+setPlatformStandTrue()
+
+local humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+local emoteId = 10714360343
+
+local function playEmote()
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://"..tostring(emoteId)
+    local loadedAnimation = humanoid:LoadAnimation(animation)
+    loadedAnimation:Play()
+end
+
+
+playEmote()
+local Humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+
+while true do
+    local rotationAngle = math.rad(math.random(0, 360))
+    Humanoid.Parent.HumanoidRootPart.CFrame = Humanoid.Parent.HumanoidRootPart.CFrame * CFrame.Angles(0, rotationAngle, 0)
+    wait(0.3)
+end
+end)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+
+local originalSize = nil
+local isActive = false
+
+local function changeSize()
+    local character = player.Character
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            local newSize = Vector3.new(humanoidRootPart.Size.X, math.random(10, 20), humanoidRootPart.Size.Z)
+            humanoidRootPart.Size = newSize
+        end
+    end
+end
+
+local function resetSize()
+    local character = player.Character
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart and originalSize then
+            humanoidRootPart.Size = originalSize
+        end
+    end
+end
+
+local switch1 = tab1.new("switch", {
+    text = "Anti Aim v2";
+})
+
+switch1.set(false)
+
+switch1.event:Connect(function(antiaim2)
+    if antiaim2 then
+        isActive = true
+        local character = player.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                originalSize = humanoidRootPart.Size
+            end
+        end
+        while isActive do
+            changeSize()
+            wait(0.2)
+        end
+    else
+        isActive = false
+        resetSize()
+    end
+end)
+
+local button1 = tab1.new("button", {
+    text = "Anti Lock",
+})
+button1.event:Connect(function()
+getgenv().Sky = true
+getgenv().SkyAmount = 360
+ 
+game:GetService("RunService").heartbeat:Connect(function()
+    if getgenv().Sky ~= false then 
+    local vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,      getgenv().SkyAmount,0) 
+    game:GetService("RunService").RenderStepped:Wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = vel
+    end 
+end)
+end)
+
+local button1 = tab1.new("button", {
+    text = "Look at camera and turn on fire",
+})
+button1.event:Connect(function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
+
+local leftMouseDown = false
+
+local function faceCameraOrOpposite()
+    local camera = game.Workspace.CurrentCamera
+
+    local direction = (camera.CFrame.Position - humanoidRootPart.Position).Unit
+
+    local horizontalDirection = Vector3.new(direction.X, 0, direction.Z).Unit
+
+    if leftMouseDown then
+        horizontalDirection = -horizontalDirection
+    end
+
+    local newCFrame = CFrame.new(humanoidRootPart.Position, humanoidRootPart.Position + horizontalDirection)
+
+    humanoidRootPart.CFrame = newCFrame
+end
+
+game:GetService("RunService").RenderStepped:Connect(faceCameraOrOpposite)
+
+local function onMouseButton1Down()
+    leftMouseDown = true
+end
+
+local function onMouseButton1Up()
+    leftMouseDown = false
+end
+
+player:GetMouse().Button1Down:Connect(onMouseButton1Down)
+player:GetMouse().Button1Up:Connect(onMouseButton1Up)
+end)
+
+local button1 = tab4.new("button", {
+    text = "Portal Gun",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/randomguy194/dollar-tree-portal-gun/main/budget%20portal%20gun.txt'))()
+end)
+
+local button1 = tab1.new("button", {
+    text = "Free Emotes",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet("https://scriptblox.com/raw/Brookhaven-RP-all-emotes-6849"))()
+end)
+
+local button1 = tab1.new("button", {
+    text = "AimLock",
+})
+button1.event:Connect(function()
+    local Area = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local MyCharacter = LocalPlayer.Character
+local MyRoot = MyCharacter:FindFirstChild("HumanoidRootPart")
+local MyHumanoid = MyCharacter:FindFirstChild("Humanoid")
+local Mouse = LocalPlayer:GetMouse()
+local MyView = Area.CurrentCamera
+local MyTeamColor = LocalPlayer.TeamColor
+local HoldingM2 = false
+local Active = false
+local Lock = false
+local Epitaph = 0.11
+local HeadOffset = Vector3.new(0, .1, 0)
+
+_G.TeamCheck = false
+_G.AimPart = "Torso"
+_G.Sensitivity = 0
+_G.CircleSides = 30
+_G.CircleColor = Color3.fromRGB(255, 0, 130)
+_G.CircleTransparency = 0
+_G.CircleRadius = 65
+_G.CircleFilled = false
+_G.CircleVisible = false
+_G.CircleThickness = 1
+
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Position = Vector2.new(MyView.ViewportSize.X / 2, MyView.ViewportSize.Y / 2)
+FOVCircle.Radius = _G.CircleRadius
+FOVCircle.Filled = _G.CircleFilled
+FOVCircle.Color = _G.CircleColor
+FOVCircle.Visible = _G.CircleVisible
+FOVCircle.Transparency = _G.CircleTransparency
+FOVCircle.NumSides = _G.CircleSides
+FOVCircle.Thickness = _G.CircleThickness
+
+local function CursorLock()
+        UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
+end
+local function UnLockCursor()
+        HoldingM2 = false Active = false Lock = false 
+        UIS.MouseBehavior = Enum.MouseBehavior.Default
+end
+function FindNearestPlayer()
+        local dist = math.huge
+        local Target = nil
+        for _, v in pairs(Players:GetPlayers()) do
+                if v ~= LocalPlayer and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("Humanoid").Health > 0 and v.Character:FindFirstChild("HumanoidRootPart") and v then
+                        local TheirCharacter = v.Character
+                        local CharacterRoot, Visible = MyView:WorldToViewportPoint(TheirCharacter[_G.AimPart].Position)
+                        if Visible then
+                                local RealMag = (Vector2.new(Mouse.X, Mouse.Y) - Vector2.new(CharacterRoot.X, CharacterRoot.Y)).Magnitude
+                                if RealMag < dist and RealMag < FOVCircle.Radius then
+                                        dist = RealMag
+                                        Target = TheirCharacter
+                                end
+                        end
+                end
+        end
+        return Target
+end
+
+UIS.InputBegan:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                HoldingM2 = true
+                Active = true
+                Lock = true
+                if Active then
+                local The_Enemy = FindNearestPlayer()
+                        while HoldingM2 do task.wait(.000001)
+                                if Lock and The_Enemy ~= nil then
+                                        local Future = The_Enemy.HumanoidRootPart.CFrame + (The_Enemy.HumanoidRootPart.Velocity * Epitaph + HeadOffset)
+                                        MyView.CFrame = CFrame.lookAt(MyView.CFrame.Position, Future.Position)
+                                        CursorLock()
+                                end
+                        end
+                end
+        end
+end)
+UIS.InputEnded:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                UnLockCursor()
+        end
+end)
+local Area = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local MyCharacter = LocalPlayer.Character
+local MyRoot = MyCharacter:FindFirstChild("HumanoidRootPart")
+local MyHumanoid = MyCharacter:FindFirstChild("Humanoid")
+local Mouse = LocalPlayer:GetMouse()
+local MyView = Area.CurrentCamera
+local MyTeamColor = LocalPlayer.TeamColor
+local HoldingM2 = false
+local Active = false
+local Lock = false
+local Epitaph = .0-- Prediction
+local HeadOffset = Vector3.new(0, .1, 0)
+
+_G.TeamCheck = false
+_G.AimPart = "Head"
+_G.Sensitivity = 0
+_G.CircleSides = 30
+_G.CircleColor = Color3.fromRGB(255, 255, 255)
+_G.CircleTransparency = 1
+_G.CircleRadius = 90
+_G.CircleFilled = false
+_G.CircleVisible = true
+_G.CircleThickness = 1
+
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Position = Vector2.new(MyView.ViewportSize.X / 2, MyView.ViewportSize.Y / 2)
+FOVCircle.Radius = _G.CircleRadius
+FOVCircle.Filled = _G.CircleFilled
+FOVCircle.Color = _G.CircleColor
+FOVCircle.Visible = _G.CircleVisible
+FOVCircle.Transparency = _G.CircleTransparency
+FOVCircle.NumSides = _G.CircleSides
+FOVCircle.Thickness = _G.CircleThickness
+
+local function CursorLock()
+        UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
+end
+local function UnLockCursor()
+        HoldingM2 = false Active = false Lock = false 
+        UIS.MouseBehavior = Enum.MouseBehavior.Default
+end
+function FindNearestPlayer()
+        local dist = math.huge
+        local Target = nil
+        for _, v in pairs(Players:GetPlayers()) do
+                if v ~= LocalPlayer and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("Humanoid").Health > 0 and v.Character:FindFirstChild("HumanoidRootPart") and v then
+                        local TheirCharacter = v.Character
+                        local CharacterRoot, Visible = MyView:WorldToViewportPoint(TheirCharacter[_G.AimPart].Position)
+                        if Visible then
+                                local RealMag = (Vector2.new(Mouse.X, Mouse.Y) - Vector2.new(CharacterRoot.X, CharacterRoot.Y)).Magnitude
+                                if RealMag < dist and RealMag < FOVCircle.Radius then
+                                        dist = RealMag
+                                        Target = TheirCharacter
+                                end
+                        end
+                end
+        end
+        return Target
+end
+
+UIS.InputBegan:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                HoldingM2 = true
+                Active = true
+                Lock = true
+                if Active then
+                local The_Enemy = FindNearestPlayer()
+                        while HoldingM2 do task.wait(.000001)
+                                if Lock and The_Enemy ~= nil then
+                                        local Future = The_Enemy.HumanoidRootPart.CFrame + (The_Enemy.HumanoidRootPart.Velocity * Epitaph + HeadOffset)
+                                        MyView.CFrame = CFrame.lookAt(MyView.CFrame.Position, Future.Position)
+                                        CursorLock()
+                                end
+                        end
+                end
+        end
+end)
+UIS.InputEnded:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                UnLockCursor()
+        end
+end)
+end)
+
+local button1 = tab1.new("button", {
+    text = "Manipulator (Hold V)",
+})
+button1.event:Connect(function()
+    local player = game.Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+local savedPosition
+
+userInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.V then
+        savedPosition = player.Character.HumanoidRootPart.Position
+    end
+end)
+
+userInputService.InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.V then
+        if savedPosition then
+            player.Character:SetPrimaryPartCFrame(CFrame.new(savedPosition))
+        end
+    end
+end)
+end)
+
+local button1 = tab1.new("button", {
+    text = "Be a little up on ground (Toggle C)",
+})
+button1.event:Connect(function()
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+
+local originalSize = nil
+
+local function toggleSize()
+    local character = player.Character
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            if originalSize == nil then
+                originalSize = humanoidRootPart.Size
+                humanoidRootPart.Size = Vector3.new(humanoidRootPart.Size.X, 7, humanoidRootPart.Size.Z)
+            else
+                humanoidRootPart.Size = originalSize
+                originalSize = nil
+            end
+        end
+    end
+end
+
+local function onInputBegan(input, gameProcessed)
+    if not gameProcessed then
+        if input.KeyCode == Enum.KeyCode.C then
+            toggleSize()
+        end
+    end
+end
+
+UserInputService.InputBegan:Connect(onInputBegan)
+end)
+
+local button1 = tab1.new("button", {
+    text = "Tp to closest cursor player",
+})
+button1.event:Connect(function()
+local player = game.Players.LocalPlayer
+
+local mouse = player:GetMouse()
+
+local fov = 2
+
+local function getClosestPlayerToCursor()
+    local closestPlayer = nil
+    local closestDistance = math.huge
+
+    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            local character = otherPlayer.Character
+            if character then
+                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+                    local screenPoint = workspace.CurrentCamera:WorldToScreenPoint(humanoidRootPart.Position)
+                    local distance = (Vector2.new(screenPoint.X, screenPoint.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude
+                    local cameraPosition = workspace.CurrentCamera.CFrame.Position
+                    local cursorDirection = workspace.CurrentCamera:ScreenPointToRay(mouse.X, mouse.Y).Direction
+                    local directionToPlayer = (humanoidRootPart.Position - cameraPosition).unit
+                    local angle = math.deg(math.acos(cursorDirection:Dot(directionToPlayer)))
+
+                    if angle <= fov and distance < closestDistance then
+                        closestDistance = distance
+                        closestPlayer = otherPlayer
+                    end
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local function teleportToClosestPlayer()
+    local closestPlayer = getClosestPlayerToCursor()
+    if closestPlayer then
+        local character = player.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local targetCharacter = closestPlayer.Character
+                if targetCharacter then
+                    local targetHumanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+                    if targetHumanoidRootPart then
+                        humanoidRootPart.CFrame = targetHumanoidRootPart.CFrame
+                    end
+                end
+            end
+        end
+    end
+end
+
+mouse.KeyDown:Connect(function(key)
+    if key == "e" then
+        teleportToClosestPlayer()
+    end
+end)
+end)
+
+local button1 = tab1.new("button", {
+    text = "Fly (X)",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/sUA9m6M6"))()
+end)
+
+local button1 = tab4.new("button", {
+    text = "Hamster Ball",
+})
+button1.event:Connect(function()
+    local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local SPEED_MULTIPLIER = 30
+local JUMP_POWER = 60
+local JUMP_GAP = 0.3
+
+local character = game.Players.LocalPlayer.Character
+
+for i,v in ipairs(character:GetDescendants()) do
+   if v:IsA("BasePart") then
+       v.CanCollide = false
+   end
+end
+
+local ball = character.HumanoidRootPart
+ball.Shape = Enum.PartType.Ball
+ball.Size = Vector3.new(5,5,5)
+local humanoid = character:WaitForChild("Humanoid")
+local params = RaycastParams.new()
+params.FilterType = Enum.RaycastFilterType.Blacklist
+params.FilterDescendantsInstances = {character}
+
+local tc = RunService.RenderStepped:Connect(function(delta)
+   ball.CanCollide = true
+   humanoid.PlatformStand = true
+if UserInputService:GetFocusedTextBox() then return end
+if UserInputService:IsKeyDown("W") then
+ball.RotVelocity -= Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+end
+if UserInputService:IsKeyDown("A") then
+ball.RotVelocity -= Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+end
+if UserInputService:IsKeyDown("S") then
+ball.RotVelocity += Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+end
+if UserInputService:IsKeyDown("D") then
+ball.RotVelocity += Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+end
+end)
+
+UserInputService.JumpRequest:Connect(function()
+local result = workspace:Raycast(
+ball.Position,
+Vector3.new(
+0,
+-((ball.Size.Y/2)+JUMP_GAP),
+0
+),
+params
+)
+if result then
+ball.Velocity = ball.Velocity + Vector3.new(0,JUMP_POWER,0)
+end
+end)
+
+Camera.CameraSubject = ball
+humanoid.Died:Connect(function() tc:Disconnect() end)
+end)
+
+local button1 = tab4.new("button", {
+    text = "Walk On Walls (BAN IN DA HOOD)",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/5T7KsEWy", true))()
+end)
+
+local button1 = tab2.new("button", {
+    text = "ESP",
+})
+
+button1.event:Connect(function()
+    local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/linemaster2/esp-library/main/library.lua"))();
+
+    ESP.Enabled = true;
+
+    ESP.ShowBox = true;
+
+    ESP.BoxType = "Corner Box Esp";
+
+    ESP.ShowName = true;
+
+    ESP.ShowHealth = true;
+
+    ESP.ShowDistance = false;
+
+    local DistFromCenter = 180
+    local TriangleHeight = 16
+    local TriangleWidth = 16
+    local TriangleFilled = true
+    local TriangleTransparency = 0
+    local TriangleThickness = 1
+    local TriangleColor = Color3.fromRGB(255, 255, 255)
+    local AntiAliasing = false
+
+    local Players = game:service("Players")
+    local Player = Players.LocalPlayer
+    local Camera = workspace.CurrentCamera
+    local RS = game:service("RunService")
+
+    local V3 = Vector3.new
+    local V2 = Vector2.new
+    local CF = CFrame.new
+    local COS = math.cos
+    local SIN = math.sin
+    local RAD = math.rad
+    local DRAWING = Drawing.new
+    local CWRAP = coroutine.wrap
+    local ROUND = math.round
+
+    local function GetRelative(pos, char)
+        if not char then return V2(0,0) end
+
+        local rootP = char.PrimaryPart.Position
+        local camP = Camera.CFrame.Position
+        local relative = CF(V3(rootP.X, camP.Y, rootP.Z), camP):PointToObjectSpace(pos)
+
+        return V2(relative.X, relative.Z)
+    end
+
+    local function RelativeToCenter(v)
+        return Camera.ViewportSize/2 - v
+    end
+
+    local function RotateVect(v, a)
+        a = RAD(a)
+        local x = v.x * COS(a) - v.y * SIN(a)
+        local y = v.x * SIN(a) + v.y * COS(a)
+
+        return V2(x, y)
+    end
+
+    local function DrawTriangle(color)
+        local l = DRAWING("Triangle")
+        l.Visible = false
+        l.Color = color
+        l.Filled = TriangleFilled
+        l.Thickness = TriangleThickness
+        l.Transparency = 1-TriangleTransparency
+        return l
+    end
+
+    local function AntiA(v)
+        if (not AntiAliasing) then return v end
+        return V2(ROUND(v.x), ROUND(v.y))
+    end
+
+    local function ShowArrow(PLAYER)
+        local Arrow = DrawTriangle(TriangleColor)
+
+        local function Update()
+            local c ; c = RS.RenderStepped:Connect(function()
+                if PLAYER and PLAYER.Character then
+                    local CHAR = PLAYER.Character
+                    local HUM = CHAR:FindFirstChildOfClass("Humanoid")
+
+                    if HUM and CHAR.PrimaryPart ~= nil and HUM.Health > 0 then
+                        local _,vis = Camera:WorldToViewportPoint(CHAR.PrimaryPart.Position)
+                        if vis == false then
+                            local rel = GetRelative(CHAR.PrimaryPart.Position, Player.Character)
+                            local direction = rel.unit
+
+                            local base  = direction * DistFromCenter
+                            local sideLength = TriangleWidth/2
+                            local baseL = base + RotateVect(direction, 90) * sideLength
+                            local baseR = base + RotateVect(direction, -90) * sideLength
+
+                            local tip = direction * (DistFromCenter + TriangleHeight)
+                            
+                            Arrow.PointA = AntiA(RelativeToCenter(baseL))
+                            Arrow.PointB = AntiA(RelativeToCenter(baseR))
+
+                            Arrow.PointC = AntiA(RelativeToCenter(tip))
+
+                            Arrow.Visible = true
+
+                        else Arrow.Visible = false end
+                    else Arrow.Visible = false end
+                else 
+                    Arrow.Visible = false
+
+                    if not PLAYER or not PLAYER.Parent then
+                        Arrow:Remove()
+                        c:Disconnect()
+                    end
+                end
+            end)
+        end
+
+        CWRAP(Update)()
+    end
+
+    for _,v in pairs(Players:GetChildren()) do
+        if v.Name ~= Player.Name then
+            ShowArrow(v)
+        end
+    end
+
+    Players.PlayerAdded:Connect(function(v)
+        if v.Name ~= Player.Name then
+            ShowArrow(v)
+        end
+    end)
+end)
+
+local button1 = tab2.new("button", {
+    text = "ESP Optimized",
+})
+
+button1.event:Connect(function()
+    local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/linemaster2/esp-library/main/library.lua"))();
+
+    ESP.Enabled = true;
+
+    ESP.ShowBox = false;
+
+    ESP.BoxType = "Corner Box Esp";
+
+    ESP.ShowName = true;
+
+    ESP.ShowHealth = true;
+
+    ESP.ShowDistance = false;
+
+    local DistFromCenter = 180
+    local TriangleHeight = 16
+    local TriangleWidth = 16
+    local TriangleFilled = true
+    local TriangleTransparency = 1
+    local TriangleThickness = 1
+    local TriangleColor = Color3.fromRGB(255, 255, 255)
+    local AntiAliasing = false
+
+    local Players = game:service("Players")
+    local Player = Players.LocalPlayer
+    local Camera = workspace.CurrentCamera
+    local RS = game:service("RunService")
+
+    local V3 = Vector3.new
+    local V2 = Vector2.new
+    local CF = CFrame.new
+    local COS = math.cos
+    local SIN = math.sin
+    local RAD = math.rad
+    local DRAWING = Drawing.new
+    local CWRAP = coroutine.wrap
+    local ROUND = math.round
+
+    local function GetRelative(pos, char)
+        if not char then return V2(0,0) end
+
+        local rootP = char.PrimaryPart.Position
+        local camP = Camera.CFrame.Position
+        local relative = CF(V3(rootP.X, camP.Y, rootP.Z), camP):PointToObjectSpace(pos)
+
+        return V2(relative.X, relative.Z)
+    end
+
+    local function RelativeToCenter(v)
+        return Camera.ViewportSize/2 - v
+    end
+
+    local function RotateVect(v, a)
+        a = RAD(a)
+        local x = v.x * COS(a) - v.y * SIN(a)
+        local y = v.x * SIN(a) + v.y * COS(a)
+
+        return V2(x, y)
+    end
+
+    local function DrawTriangle(color)
+        local l = DRAWING("Triangle")
+        l.Visible = false
+        l.Color = color
+        l.Filled = TriangleFilled
+        l.Thickness = TriangleThickness
+        l.Transparency = 1-TriangleTransparency
+        return l
+    end
+
+    local function AntiA(v)
+        if (not AntiAliasing) then return v end
+        return V2(ROUND(v.x), ROUND(v.y))
+    end
+
+    local function ShowArrow(PLAYER)
+        local Arrow = DrawTriangle(TriangleColor)
+
+        local function Update()
+            local c ; c = RS.RenderStepped:Connect(function()
+                if PLAYER and PLAYER.Character then
+                    local CHAR = PLAYER.Character
+                    local HUM = CHAR:FindFirstChildOfClass("Humanoid")
+
+                    if HUM and CHAR.PrimaryPart ~= nil and HUM.Health > 0 then
+                        local _,vis = Camera:WorldToViewportPoint(CHAR.PrimaryPart.Position)
+                        if vis == false then
+                            local rel = GetRelative(CHAR.PrimaryPart.Position, Player.Character)
+                            local direction = rel.unit
+
+                            local base  = direction * DistFromCenter
+                            local sideLength = TriangleWidth/2
+                            local baseL = base + RotateVect(direction, 90) * sideLength
+                            local baseR = base + RotateVect(direction, -90) * sideLength
+
+                            local tip = direction * (DistFromCenter + TriangleHeight)
+                            
+                            Arrow.PointA = AntiA(RelativeToCenter(baseL))
+                            Arrow.PointB = AntiA(RelativeToCenter(baseR))
+
+                            Arrow.PointC = AntiA(RelativeToCenter(tip))
+
+                            Arrow.Visible = true
+
+                        else Arrow.Visible = false end
+                    else Arrow.Visible = false end
+                else 
+                    Arrow.Visible = false
+
+                    if not PLAYER or not PLAYER.Parent then
+                        Arrow:Remove()
+                        c:Disconnect()
+                    end
+                end
+            end)
+        end
+
+        CWRAP(Update)()
+    end
+
+    for _,v in pairs(Players:GetChildren()) do
+        if v.Name ~= Player.Name then
+            ShowArrow(v)
+        end
+    end
+
+    Players.PlayerAdded:Connect(function(v)
+        if v.Name ~= Player.Name then
+            ShowArrow(v)
+        end
+    end)
+end)
+
+local button1 = tab2.new("button", {
+    text = "Outlines",
+})
+local espInstances = {}
+
+local function createHighlight(player)
+    local esp = Instance.new("Highlight")
+    esp.Name = player.Name
+    esp.FillTransparency = 1
+    esp.FillColor = Color3.new(0, 0, 0)
+    esp.OutlineColor = Color3.new(1, 1, 1)
+    esp.OutlineTransparency = 0
+    esp.Parent = player.Character
+
+    table.insert(espInstances, {player = player, instance = esp})
+end
+
+button1.event:Connect(function()
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player.Character then
+            createHighlight(player)
+        end
+    end
+
+    game.Players.PlayerAdded:Connect(function(player)
+        player.CharacterAdded:Connect(function(character)
+            createHighlight(player)
+        end)
+    end)
+end)
+
+local color1 = tab2.new("color", {
+    color = Color3.new(1, 1, 1),
+    text = "Outline Color",
+})
+color1.event:Connect(function(color)
+    for _, data in ipairs(espInstances) do
+        local highlight = data.instance
+        if highlight then
+            highlight.OutlineColor = color
+        end
+    end
+end)
+
+local switch1 = tab2.new("switch", {
+    text = "Rainbow Outlines",
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    if bool then
+        local hue = 0
+        while bool do
+            hue = (hue + 0.01) % 1
+
+            local rainbowColor = Color3.fromHSV(hue, 1, 1)
+
+            for _, data in ipairs(espInstances) do
+                local highlight = data.instance
+                if highlight then
+                    highlight.OutlineColor = rainbowColor
+                end
+            end
+
+            wait(0.05)
+        end
+    else
+        for _, data in ipairs(espInstances) do
+            local highlight = data.instance
+            if highlight then
+                highlight.OutlineColor = color1.color
+            end
+        end
+    end
+end)
+
+local button1 = tab2.new("button", {
+    text = "Tracers",
+})
+button1.event:Connect(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/pwrsk/FE/main/Tracers"))()
+end)
+
+local button1 = tab3.new("button", {
+    text = "Reset",
+})
+button1.event:Connect(function()
+local player = game.Players.LocalPlayer
+
+local character = player.Character or player.CharacterAdded:Wait()
+
+local head = character:WaitForChild("Head")
+
+head:Destroy()
+end)
+
+local player = game.Players.LocalPlayer
+local isScriptEnabled = false
+
+local function onCharacterAdded(character)
+    local humanoid = character:WaitForChild("Humanoid")
+    
+    local switch1 = tab3.new("switch", {
+        text = "Anti Stomp"
+    })
+    switch1.set(false)
+    switch1.event:Connect(function(antis)
+        isScriptEnabled = antis
+        if not isScriptEnabled then
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part:Destroy()
+                end
+            end
+        end
+    end)
+    
+    game:GetService("RunService").Stepped:Connect(function()
+        if isScriptEnabled and humanoid.Health < 6 then
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part:Destroy()
+                end
+            end
+        end
+    end)
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+
+
+local slider1 = tab3.new("slider", {
+    text = "Walkspeed",
+    color = Color3.new(0, 0, 0),
+    min = 16,
+    max = 1000,
+    value = 600.1,
+    rounding = 1,
+})
+slider1.event:Connect(function(speedP)
+            while game:GetService("RunService").RenderStepped:wait() do
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speedP
+            end
+end)
+slider1.set(16)
+
+local button1 = tab2.new("button", {
+    text = "Universal ESP",
+})
+button1.event:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua'))()
+end)
+
+local slider1 = tab3.new("slider", {
+    text = "Jump Power",
+    color = Color3.new(0, 0, 0),
+    min = 50,
+    max = 1000,
+    value = 600.1,
+    rounding = 1,
+})
+slider1.event:Connect(function(jumpP)
+            while game:GetService("RunService").RenderStepped:wait() do
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = jumpP
+            end
+end)
+slider1.set(50)
+
+local LocalPlayer = game.Players.LocalPlayer
+local AbyssSettings = {
+    Speed = {Enabled = true, Motion = true, Amount = 2.0},
+    Fly = {Enabled = false}
+}
+
+local SpeedModule = function(State)
+    AbyssSettings.Speed.Enabled = State
+end
+
+local function onRenderStepped()
+    if AbyssSettings.Speed.Enabled and not AbyssSettings.Fly.Enabled then
+        local character = LocalPlayer.Character
+        if character and character:FindFirstChild("Humanoid") then
+            local humanoid = character.Humanoid
+            if humanoid.MoveDirection.Magnitude > 0 then
+                if AbyssSettings.Speed.Motion then
+                    character:TranslateBy(humanoid.MoveDirection * AbyssSettings.Speed.Amount / 1.5)
+                end
+            end
+        end
+    end
+end
+
+game:GetService("RunService").RenderStepped:Connect(onRenderStepped)
+
+SpeedModule(true)
+
+local slider1 = tab3.new("slider", {
+    text = "Strafe Walkspeed",
+    color = Color3.new(0, 0, 0),
+    min = 1,
+    max = 1000,
+    value = 600.1,
+    rounding = 1,
+})
+slider1.event:Connect(function(newSpeed)
+    AbyssSettings.Speed.Amount = newSpeed / 100
+end)
+slider1.set(1)
+
+local switch1 = tab3.new("switch", {
+    text = "No Rotate",
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    humanoid.AutoRotate = not bool
+end)
+
+local Player = game:GetService("Players").LocalPlayer
+local Mouse = Player:GetMouse()
+
+Mouse.KeyDown:connect(function(k)
+    if _G.infinjump then
+        if k:byte() == 32 then
+            local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+            Humanoid:ChangeState("Jumping")
+            wait(0.1)
+            Humanoid:ChangeState("Seated")
+        end
+    end
+end)
+
+Mouse.KeyDown:connect(function(k)
+    k = k:lower()
+    if k == "" then
+        if _G.infinjump == true then
+            _G.infinjump = false
+        else
+            _G.infinjump = true
+        end
+    end
+end)
+
+local player = game.Players.LocalPlayer
+
+local switch1 = tab3.new("switch", {
+    text = "No sit on seats";
+})
+switch1.set(false)
+
+local isActive = true
+
+local function disableSeat(seat)
+    if seat and seat:IsA("Seat") then
+        seat.Disabled = true
+    end
+end
+
+local function enableSeat(seat)
+    if seat and seat:IsA("Seat") then
+        seat.Disabled = false
+    end
+end
+
+local function toggleAllSeats(state)
+    isActive = state
+    for _, seat in ipairs(game.Workspace:GetDescendants()) do
+        if seat:IsA("Seat") then
+            if isActive then
+                disableSeat(seat)
+            else
+                enableSeat(seat)
+            end
+        end
+    end
+end
+
+switch1.event:Connect(function(nosit)
+    toggleAllSeats(nosit)
+end)
+
+local switch1 = tab3.new("switch", {
+    text = "Inf Jump",
+})
+_G.infinjump = false
+
+switch1.event:Connect(function(infj)
+    if infj then
+        _G.infinjump = true
+    else
+        _G.infinjump = false
+    end
+end)
+
+local switch1 = tab3.new("switch", {
+    text = "White tracer";
+})
+
+local tracersEnabled = false
+local heartbeatConnection = nil
+
+local function toggleTracers(enabled)
+    if enabled then
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+        local debris = game:GetService("Debris")
+
+        local function createBeam(startPosition, endPosition)
+            local startPart = Instance.new("Part")
+            startPart.Shape = Enum.PartType.Ball
+            startPart.Material = Enum.Material.Neon
+            startPart.Color = Color3.new(255, 255, 255)
+            startPart.Size = Vector3.new(0.2, 0.2, 0.2)
+            startPart.CFrame = CFrame.new(startPosition)
+            startPart.Anchored = true
+            startPart.CanCollide = false
+            startPart.Parent = workspace
+
+            local endPart = Instance.new("Part")
+            endPart.Shape = Enum.PartType.Ball
+            endPart.Material = Enum.Material.Neon
+            endPart.Color = Color3.new(255, 255, 255)
+            endPart.Size = Vector3.new(0.2, 0.2, 0.2)
+            endPart.CFrame = CFrame.new(endPosition)
+            endPart.Anchored = true
+            endPart.CanCollide = false
+            endPart.Parent = workspace
+
+            local beam = Instance.new("Beam")
+            beam.Attachment0 = Instance.new("Attachment")
+            beam.Attachment0.Parent = startPart
+            beam.Attachment1 = Instance.new("Attachment")
+            beam.Attachment1.Parent = endPart
+            beam.Color = ColorSequence.new(Color3.new(255, 255, 255))
+            beam.Width0 = 0.2
+            beam.Width1 = 0.2
+            beam.FaceCamera = true
+            beam.Parent = startPart
+
+            debris:AddItem(startPart, 2)
+            debris:AddItem(endPart, 2)
+        end
+
+        local lastPosition = humanoidRootPart.Position
+
+        local function onStep()
+            local currentPosition = humanoidRootPart.Position
+            local distance = (currentPosition - lastPosition).Magnitude
+
+            if distance > 1 then
+                createBeam(lastPosition, currentPosition)
+                lastPosition = currentPosition
+            end
+        end
+
+        heartbeatConnection = game:GetService("RunService").Heartbeat:Connect(onStep)
+    else
+        if heartbeatConnection then
+            heartbeatConnection:Disconnect()
+            heartbeatConnection = nil
+        end
+    end
+end
+
+switch1.event:Connect(function(enabled)
+    tracersEnabled = enabled
+    toggleTracers(tracersEnabled)
+
+switch1.set(tracersEnabled)
+end)
+
+
+
+local button1 = tab3.new("button", {
+    text = "Inf Jump",
+})
+
+button1.event:Connect(function()
+    local Player = game:GetService('Players').LocalPlayer
+    local UIS = game:GetService('UserInputService')
+
+    _G.JumpHeight = 50
+
+    function Action(Object, Function)
+        if Object ~= nil then
+            Function(Object)
+        end
+    end
+
+    UIS.InputBegan:Connect(function(UserInput, gameProcessed)
+        if not gameProcessed then
+            if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+                local character = Player.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        if humanoid:GetState() == Enum.HumanoidStateType.Jumping or humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+                            local rootPart = character:FindFirstChild("HumanoidRootPart")
+                            if rootPart then
+                                rootPart.Velocity = Vector3.new(0, _G.JumpHeight, 0)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+
+
+
+local function ZXMFP_fake_script()
+    local script = Instance.new('Script', ScreenGui)
+
+    frame = script.Parent.Main
+    frame.Draggable = true
+    frame.Active = true
+    frame.Selectable = true
+end
+coroutine.wrap(ZXMFP_fake_script)()
+end)
+local slider1 = tab3.new("slider", {
+    text = "Fov",
+    color = Color3.new(0, 0, 0),
+    min = 10,
+    max = 120,
+    value = 600.1,
+    rounding = 1,
+})
+slider1.event:Connect(function(fov)
+while game:GetService("RunService").RenderStepped:wait() do
+            workspace.Camera.FieldOfView  = fov
+            end
+end)
+slider1.set(70)
+
+local Clipon = false
+local Plr = game.Players.LocalPlayer
+local switch1 = tab3.new("switch", {
+    text = "Noclip";
+})
+switch1.set(false)
+
+switch1.event:Connect(function(noclep)
+    if noclep then
+        Clipon = true
+        game:GetService("RunService").Stepped:Connect(function()
+            if Clipon then
+                for a, b in pairs(workspace:GetChildren()) do
+                    if b.Name == Plr.Name then
+                        for i, v in pairs(workspace[Plr.Name]:GetChildren()) do
+                            if v:IsA("BasePart") then
+                                v.CanCollide = false
+                            end 
+                        end 
+                    end 
+                end
+            else
+                game:GetService("RunService"):UnbindFromRenderStep("Noclip")
+            end
+        end)
+    else
+        Clipon = false
+        game:GetService("RunService"):UnbindFromRenderStep("Noclip")
+    end
+
+end)
+
+local player = game.Players.LocalPlayer
+
+-- Создаем свитч
+local switch1 = tab3.new("switch", {
+    text = "ForceField Player";
+})
+switch1.set(false)
+
+local isActive = false
+
+local function changeMaterialToForceField(character)
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Material = Enum.Material.ForceField
+        end
+    end
+end
+
+local function restoreOriginalMaterial(character)
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Material = Enum.Material.Plastic
+        end
+    end
+end
+
+local function toggleForceField(state)
+    isActive = state
+    local character = player.Character
+    if character then
+        if isActive then
+            changeMaterialToForceField(character)
+        else
+            restoreOriginalMaterial(character)
+        end
+    end
+end
+
+switch1.event:Connect(function(ffplayer)
+    toggleForceField(ffplayer)
+end)
+
+local function onCharacterAdded(newCharacter)
+    if isActive then
+        changeMaterialToForceField(newCharacter)
+    end
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local switch1 = tab3.new("switch", {
+    text = "Rainbow Highlight";
+})
+switch1.set(false)
+
+local isActive = false
+
+-- Создаем Highlight объект
+local highlight = Instance.new("Highlight")
+highlight.Enabled = false
+highlight.OutlineTransparency = 1
+highlight.FillTransparency = 0
+highlight.Parent = nil
+
+-- Функция для обновления цвета подсветки
+local function updateHighlightColor()
+    if isActive and highlight.Parent then
+        local hue = tick() % 10 / 10
+        highlight.FillColor = Color3.fromHSV(hue, 1, 1)
+    end
+end
+
+local function toggleHighlight(state)
+    isActive = state
+    highlight.Enabled = state
+    if state then
+        print("Highlight enabled")
+        highlight.Parent = character
+        updateHighlightColor()
+    else
+        print("Highlight disabled")
+        highlight.Parent = nil
+    end
+end
+
+switch1.event:Connect(function(highlightActive)
+    toggleHighlight(highlightActive)
+end)
+
+game:GetService("RunService").RenderStepped:Connect(updateHighlightColor)
+
+player.CharacterAdded:Connect(function(newCharacter)
+    print("Character added")
+    character = newCharacter
+    if isActive then
+        highlight.Parent = newCharacter
+    end
+end)
+
+local button1 = tab3.new("button", {
+    text = "Emo Animation",
+})
+
+button1.event:Connect(function()
+    local players = game:GetService("Players")
+
+    local function setPlatformStandTrue()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = true
+                end
+            end
+        end
+    end
+
+    local function setToyAnimations()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local animate = character:FindFirstChild("Animate")
+
+        if animate then
+            animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083445855"
+            animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083450166"
+            animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=782843345"
+            animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=782842708"
+            animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=782843869"
+            animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=782846423"
+            character.Humanoid.Jump = true
+        end
+    end
+
+    local function setPlatformStandFalse()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = false
+                end
+            end
+        end
+    end
+
+    setPlatformStandTrue()
+
+    wait(0.1)
+
+    setToyAnimations()
+
+    wait(0.1)
+
+    setPlatformStandFalse()
+end)
+
+local button1 = tab3.new("button", {
+    text = "Hands Up Animation",
+})
+
+button1.event:Connect(function()
+    local players = game:GetService("Players")
+
+    local function setPlatformStandTrue()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = true
+                end
+            end
+        end
+    end
+
+    local function setToyAnimations()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local animate = character:FindFirstChild("Animate")
+
+        if animate then
+            animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020"
+            character.Humanoid.Jump = true
+        end
+    end
+
+    local function setPlatformStandFalse()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = false
+                end
+            end
+        end
+    end
+
+    setPlatformStandTrue()
+
+    wait(0.1)
+
+    setToyAnimations()
+
+    wait(0.1)
+
+    setPlatformStandFalse()
+end)
+
+local button1 = tab3.new("button", {
+    text = "Bold Animation (Ugly)",
+})
+
+button1.event:Connect(function()
+    local players = game:GetService("Players")
+
+    local function setPlatformStandTrue()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = true
+                end
+            end
+        end
+    end
+
+    local function setToyAnimations()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local animate = character:FindFirstChild("Animate")
+
+        if animate then
+            -- Set toy animations
+            animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=16738333868"
+            animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=16738334710"
+            animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=16738340646"
+            animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=16738337225"
+            animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=16738336650"
+            animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1014380606"
+            animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=16738333171"
+            character.Humanoid.Jump = true
+        end
+    end
+
+    local function setPlatformStandFalse()
+        for _, player in ipairs(players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = false
+                end
+            end
+        end
+    end
+
+    setPlatformStandTrue()
+
+    wait(0.1)
+
+    setToyAnimations()
+
+    wait(0.1)
+
+    setPlatformStandFalse()
+end)
+
+local button1 = tab4.new("button", {
+    text = "Player Tweaker",
+})
+button1.event:Connect(function()
+    local Players = game:GetService("Players")
+
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        character.Humanoid.Died:Connect(function()
+            wait(5)
+            player:LoadCharacter()
+        end)
+    end)
+end)
+
+local function AntiAim()
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        character:SetPrimaryPartCFrame(CFrame.new(character.PrimaryPart.Position + Vector3.new(math.random(-10, 10), 0, math.random(-10, 10))))
+    end
+end
+
+while true do
+    AntiAim()
+    wait(0.001)
+end
+end)
+
+local button1 = tab4.new("button", {
+    text = "FreeCam (Shift + P)",
+})
+button1.event:Connect(function()
+    local pi    = math.pi
+local abs   = math.abs
+local clamp = math.clamp
+local exp   = math.exp
+local rad   = math.rad
+local sign  = math.sign
+local sqrt  = math.sqrt
+local tan   = math.tan
+
+local ContextActionService = game:GetService("ContextActionService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+local Settings = UserSettings()
+local GameSettings = Settings.GameSettings
+
+local LocalPlayer = Players.LocalPlayer
+if not LocalPlayer then
+	Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+	LocalPlayer = Players.LocalPlayer
+end
+
+local Camera = Workspace.CurrentCamera
+Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+	local newCamera = Workspace.CurrentCamera
+	if newCamera then
+		Camera = newCamera
+	end
+end)
+
+local FFlagUserExitFreecamBreaksWithShiftlock
+do
+    local success, result = pcall(function()
+        return UserSettings():IsUserFeatureEnabled("UserExitFreecamBreaksWithShiftlock")
+    end)
+    FFlagUserExitFreecamBreaksWithShiftlock = success and result
+end
+
+local TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value
+local INPUT_PRIORITY = Enum.ContextActionPriority.High.Value
+local FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift, Enum.KeyCode.P}
+
+local NAV_GAIN = Vector3.new(1, 1, 1)*64
+local PAN_GAIN = Vector2.new(0.75, 1)*8
+local FOV_GAIN = 300
+
+local PITCH_LIMIT = rad(90)
+
+local VEL_STIFFNESS = 1.5
+local PAN_STIFFNESS = 1.0
+local FOV_STIFFNESS = 4.0
+
+local Spring = {} do
+	Spring.__index = Spring
+
+	function Spring.new(freq, pos)
+		local self = setmetatable({}, Spring)
+		self.f = freq
+		self.p = pos
+		self.v = pos*0
+		return self
+	end
+
+	function Spring:Update(dt, goal)
+		local f = self.f*2*pi
+		local p0 = self.p
+		local v0 = self.v
+
+		local offset = goal - p0
+		local decay = exp(-f*dt)
+
+		local p1 = goal + (v0*dt - offset*(f*dt + 1))*decay
+		local v1 = (f*dt*(offset*f - v0) + v0)*decay
+
+		self.p = p1
+		self.v = v1
+
+		return p1
+	end
+
+	function Spring:Reset(pos)
+		self.p = pos
+		self.v = pos*0
+	end
+end
+
+local cameraPos = Vector3.new()
+local cameraRot = Vector2.new()
+local cameraFov = 0
+
+local velSpring = Spring.new(VEL_STIFFNESS, Vector3.new())
+local panSpring = Spring.new(PAN_STIFFNESS, Vector2.new())
+local fovSpring = Spring.new(FOV_STIFFNESS, 0)
+
+local Input = {} do
+	local thumbstickCurve do
+		local K_CURVATURE = 2.0
+		local K_DEADZONE = 0.15
+
+		local function fCurve(x)
+			return (exp(K_CURVATURE*x) - 1)/(exp(K_CURVATURE) - 1)
+		end
+
+		local function fDeadzone(x)
+			return fCurve((x - K_DEADZONE)/(1 - K_DEADZONE))
+		end
+
+		function thumbstickCurve(x)
+			return sign(x)*clamp(fDeadzone(abs(x)), 0, 1)
+		end
+	end
+
+	local gamepad = {
+		ButtonX = 0,
+		ButtonY = 0,
+		DPadDown = 0,
+		DPadUp = 0,
+		ButtonL2 = 0,
+		ButtonR2 = 0,
+		Thumbstick1 = Vector2.new(),
+		Thumbstick2 = Vector2.new(),
+	}
+
+	local keyboard = {
+		W = 0,
+		A = 0,
+		S = 0,
+		D = 0,
+		E = 0,
+		Q = 0,
+		U = 0,
+		H = 0,
+		J = 0,
+		K = 0,
+		I = 0,
+		Y = 0,
+		Up = 0,
+		Down = 0,
+		LeftShift = 0,
+		RightShift = 0,
+	}
+
+	local mouse = {
+		Delta = Vector2.new(),
+		MouseWheel = 0,
+	}
+
+	local NAV_GAMEPAD_SPEED  = Vector3.new(1, 1, 1)
+	local NAV_KEYBOARD_SPEED = Vector3.new(1, 1, 1)
+	local PAN_MOUSE_SPEED    = Vector2.new(1, 1)*(pi/64)
+	local PAN_GAMEPAD_SPEED  = Vector2.new(1, 1)*(pi/8)
+	local FOV_WHEEL_SPEED    = 1.0
+	local FOV_GAMEPAD_SPEED  = 0.25
+	local NAV_ADJ_SPEED      = 0.75
+	local NAV_SHIFT_MUL      = 0.25
+
+	local navSpeed = 1
+
+	function Input.Vel(dt)
+		navSpeed = clamp(navSpeed + dt*(keyboard.Up - keyboard.Down)*NAV_ADJ_SPEED, 0.01, 4)
+
+		local kGamepad = Vector3.new(
+			thumbstickCurve(gamepad.Thumbstick1.X),
+			thumbstickCurve(gamepad.ButtonR2) - thumbstickCurve(gamepad.ButtonL2),
+			thumbstickCurve(-gamepad.Thumbstick1.Y)
+		)*NAV_GAMEPAD_SPEED
+
+		local kKeyboard = Vector3.new(
+			keyboard.D - keyboard.A + keyboard.K - keyboard.H,
+			keyboard.E - keyboard.Q + keyboard.I - keyboard.Y,
+			keyboard.S - keyboard.W + keyboard.J - keyboard.U
+		)*NAV_KEYBOARD_SPEED
+
+		local shift = UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or UserInputService:IsKeyDown(Enum.KeyCode.RightShift)
+
+		return (kGamepad + kKeyboard)*(navSpeed*(shift and NAV_SHIFT_MUL or 1))
+	end
+
+	function Input.Pan(dt)
+		local kGamepad = Vector2.new(
+			thumbstickCurve(gamepad.Thumbstick2.Y),
+			thumbstickCurve(-gamepad.Thumbstick2.X)
+		)*PAN_GAMEPAD_SPEED
+		local kMouse = mouse.Delta*PAN_MOUSE_SPEED
+		mouse.Delta = Vector2.new()
+		return kGamepad + kMouse
+	end
+
+	function Input.Fov(dt)
+		local kGamepad = (gamepad.ButtonX - gamepad.ButtonY)*FOV_GAMEPAD_SPEED
+		local kMouse = mouse.MouseWheel*FOV_WHEEL_SPEED
+		mouse.MouseWheel = 0
+		return kGamepad + kMouse
+	end
+
+	do
+		local function Keypress(action, state, input)
+			keyboard[input.KeyCode.Name] = state == Enum.UserInputState.Begin and 1 or 0
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function GpButton(action, state, input)
+			gamepad[input.KeyCode.Name] = state == Enum.UserInputState.Begin and 1 or 0
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function MousePan(action, state, input)
+			local delta = input.Delta
+			mouse.Delta = Vector2.new(-delta.y, -delta.x)
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function Thumb(action, state, input)
+			gamepad[input.KeyCode.Name] = input.Position
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function Trigger(action, state, input)
+			gamepad[input.KeyCode.Name] = input.Position.z
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function MouseWheel(action, state, input)
+			mouse[input.UserInputType.Name] = -input.Position.z
+			return Enum.ContextActionResult.Sink
+		end
+
+		local function Zero(t)
+			for k, v in pairs(t) do
+				t[k] = v*0
+			end
+		end
+
+		function Input.StartCapture()
+			ContextActionService:BindActionAtPriority("FreecamKeyboard", Keypress, false, INPUT_PRIORITY,
+				Enum.KeyCode.W, Enum.KeyCode.U,
+				Enum.KeyCode.A, Enum.KeyCode.H,
+				Enum.KeyCode.S, Enum.KeyCode.J,
+				Enum.KeyCode.D, Enum.KeyCode.K,
+				Enum.KeyCode.E, Enum.KeyCode.I,
+				Enum.KeyCode.Q, Enum.KeyCode.Y,
+				Enum.KeyCode.Up, Enum.KeyCode.Down
+			)
+			ContextActionService:BindActionAtPriority("FreecamMousePan",          MousePan,   false, INPUT_PRIORITY, Enum.UserInputType.MouseMovement)
+			ContextActionService:BindActionAtPriority("FreecamMouseWheel",        MouseWheel, false, INPUT_PRIORITY, Enum.UserInputType.MouseWheel)
+			ContextActionService:BindActionAtPriority("FreecamGamepadButton",     GpButton,   false, INPUT_PRIORITY, Enum.KeyCode.ButtonX, Enum.KeyCode.ButtonY)
+			ContextActionService:BindActionAtPriority("FreecamGamepadTrigger",    Trigger,    false, INPUT_PRIORITY, Enum.KeyCode.ButtonR2, Enum.KeyCode.ButtonL2)
+			ContextActionService:BindActionAtPriority("FreecamGamepadThumbstick", Thumb,      false, INPUT_PRIORITY, Enum.KeyCode.Thumbstick1, Enum.KeyCode.Thumbstick2)
+		end
+
+		function Input.StopCapture()
+			navSpeed = 1
+			Zero(gamepad)
+			Zero(keyboard)
+			Zero(mouse)
+			ContextActionService:UnbindAction("FreecamKeyboard")
+			ContextActionService:UnbindAction("FreecamMousePan")
+			ContextActionService:UnbindAction("FreecamMouseWheel")
+			ContextActionService:UnbindAction("FreecamGamepadButton")
+			ContextActionService:UnbindAction("FreecamGamepadTrigger")
+			ContextActionService:UnbindAction("FreecamGamepadThumbstick")
+		end
+	end
+end
+
+local function GetFocusDistance(cameraFrame)
+	local znear = 0.1
+	local viewport = Camera.ViewportSize
+	local projy = 2*tan(cameraFov/2)
+	local projx = viewport.x/viewport.y*projy
+	local fx = cameraFrame.rightVector
+	local fy = cameraFrame.upVector
+	local fz = cameraFrame.lookVector
+
+	local minVect = Vector3.new()
+	local minDist = 512
+
+	for x = 0, 1, 0.5 do
+		for y = 0, 1, 0.5 do
+			local cx = (x - 0.5)*projx
+			local cy = (y - 0.5)*projy
+			local offset = fx*cx - fy*cy + fz
+			local origin = cameraFrame.p + offset*znear
+			local _, hit = Workspace:FindPartOnRay(Ray.new(origin, offset.unit*minDist))
+			local dist = (hit - origin).magnitude
+			if minDist > dist then
+				minDist = dist
+				minVect = offset.unit
+			end
+		end
+	end
+
+	return fz:Dot(minVect)*minDist
+end
+
+local function StepFreecam(dt)
+	local vel = velSpring:Update(dt, Input.Vel(dt))
+	local pan = panSpring:Update(dt, Input.Pan(dt))
+	local fov = fovSpring:Update(dt, Input.Fov(dt))
+
+	local zoomFactor = sqrt(tan(rad(70/2))/tan(rad(cameraFov/2)))
+
+	cameraFov = clamp(cameraFov + fov*FOV_GAIN*(dt/zoomFactor), 1, 120)
+	cameraRot = cameraRot + pan*PAN_GAIN*(dt/zoomFactor)
+	cameraRot = Vector2.new(clamp(cameraRot.x, -PITCH_LIMIT, PITCH_LIMIT), cameraRot.y%(2*pi))
+
+	local cameraCFrame = CFrame.new(cameraPos)*CFrame.fromOrientation(cameraRot.x, cameraRot.y, 0)*CFrame.new(vel*NAV_GAIN*dt)
+	cameraPos = cameraCFrame.p
+
+	Camera.CFrame = cameraCFrame
+	Camera.Focus = cameraCFrame*CFrame.new(0, 0, -GetFocusDistance(cameraCFrame))
+	Camera.FieldOfView = cameraFov
+end
+
+local function CheckMouseLockAvailability()
+	local devAllowsMouseLock = Players.LocalPlayer.DevEnableMouseLock
+	local devMovementModeIsScriptable = Players.LocalPlayer.DevComputerMovementMode == Enum.DevComputerMovementMode.Scriptable
+	local userHasMouseLockModeEnabled = GameSettings.ControlMode == Enum.ControlMode.MouseLockSwitch
+	local userHasClickToMoveEnabled =  GameSettings.ComputerMovementMode == Enum.ComputerMovementMode.ClickToMove
+	local MouseLockAvailable = devAllowsMouseLock and userHasMouseLockModeEnabled and not userHasClickToMoveEnabled and not devMovementModeIsScriptable
+
+	return MouseLockAvailable
+end
+
+local PlayerState = {} do
+	local mouseBehavior
+	local mouseIconEnabled
+	local cameraType
+	local cameraFocus
+	local cameraCFrame
+	local cameraFieldOfView
+	local screenGuis = {}
+	local coreGuis = {
+		Backpack = true,
+		Chat = true,
+		Health = true,
+		PlayerList = true,
+	}
+	local setCores = {
+		BadgesNotificationsActive = true,
+		PointsNotificationsActive = true,
+	}
+
+	function PlayerState.Push()
+		for name in pairs(coreGuis) do
+			coreGuis[name] = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType[name])
+			StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], false)
+		end
+		for name in pairs(setCores) do
+			setCores[name] = StarterGui:GetCore(name)
+			StarterGui:SetCore(name, false)
+		end
+		local playergui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+		if playergui then
+			for _, gui in pairs(playergui:GetChildren()) do
+				if gui:IsA("ScreenGui") and gui.Enabled then
+					screenGuis[#screenGuis + 1] = gui
+					gui.Enabled = false
+				end
+			end
+		end
+
+		cameraFieldOfView = Camera.FieldOfView
+		Camera.FieldOfView = 70
+
+		cameraType = Camera.CameraType
+		Camera.CameraType = Enum.CameraType.Custom
+
+		cameraCFrame = Camera.CFrame
+		cameraFocus = Camera.Focus
+
+		mouseIconEnabled = UserInputService.MouseIconEnabled
+		UserInputService.MouseIconEnabled = false
+
+		if FFlagUserExitFreecamBreaksWithShiftlock and CheckMouseLockAvailability() then
+			mouseBehavior = Enum.MouseBehavior.Default
+		else
+			mouseBehavior = UserInputService.MouseBehavior
+		end
+		UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+	end
+
+	function PlayerState.Pop()
+		for name, isEnabled in pairs(coreGuis) do
+			StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], isEnabled)
+		end
+		for name, isEnabled in pairs(setCores) do
+			StarterGui:SetCore(name, isEnabled)
+		end
+		for _, gui in pairs(screenGuis) do
+			if gui.Parent then
+				gui.Enabled = true
+			end
+		end
+
+		Camera.FieldOfView = cameraFieldOfView
+		cameraFieldOfView = nil
+
+		Camera.CameraType = cameraType
+		cameraType = nil
+
+		Camera.CFrame = cameraCFrame
+		cameraCFrame = nil
+
+		Camera.Focus = cameraFocus
+		cameraFocus = nil
+
+		UserInputService.MouseIconEnabled = mouseIconEnabled
+		mouseIconEnabled = nil
+
+		UserInputService.MouseBehavior = mouseBehavior
+		mouseBehavior = nil
+	end
+end
+
+local function StartFreecam()
+	local cameraCFrame = Camera.CFrame
+	cameraRot = Vector2.new(cameraCFrame:toEulerAnglesYXZ())
+	cameraPos = cameraCFrame.p
+	cameraFov = Camera.FieldOfView
+
+	velSpring:Reset(Vector3.new())
+	panSpring:Reset(Vector2.new())
+	fovSpring:Reset(0)
+
+	PlayerState.Push()
+	RunService:BindToRenderStep("Freecam", Enum.RenderPriority.Camera.Value, StepFreecam)
+	Input.StartCapture()
+end
+
+local function StopFreecam()
+	Input.StopCapture()
+	RunService:UnbindFromRenderStep("Freecam")
+	PlayerState.Pop()
+end
+
+do
+	local enabled = false
+
+	local function ToggleFreecam()
+		if enabled then
+			StopFreecam()
+		else
+			StartFreecam()
+		end
+		enabled = not enabled
+	end
+
+	local function CheckMacro(macro)
+		for i = 1, #macro - 1 do
+			if not UserInputService:IsKeyDown(macro[i]) then
+				return
+			end
+		end
+		ToggleFreecam()
+	end
+
+	local function HandleActivationInput(action, state, input)
+		if state == Enum.UserInputState.Begin then
+			if input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB] then
+				CheckMacro(FREECAM_MACRO_KB)
+			end
+		end
+		return Enum.ContextActionResult.Pass
+	end
+
+	ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB])
+end
+end)
+
+local button1 = tab4.new("button", {
+    text = "Spin -7",
+})
+button1.event:Connect(function()
+    local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local speed = -5
+
+humanoid.Died:Connect(function()
+    script:Destroy()
+end)
+
+while true do
+    local rootPart = character.PrimaryPart or character:WaitForChild("HumanoidRootPart")
+    rootPart.CFrame = rootPart.CFrame * CFrame.Angles(0, math.rad(speed), 0)
+    wait(1/30)
+end
+end)
+
+local button1 = tab5.new("button", {
+    text = "DH Cashiers ESP",
+})
+
+button1.event:Connect(function()
+local RunService = game:GetService("RunService")
+
+local function updateHighlights()
+    local cashiersFolder = game.Workspace:FindFirstChild("Cashiers")
+
+    if cashiersFolder then
+        for _, child in ipairs(cashiersFolder:GetChildren()) do
+            if child:IsA("Model") then
+                local humanoid = child:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    local highlight = child:FindFirstChild("Highlight")
+                    if humanoid.Health < 1 then
+                        if not highlight then
+                            highlight = Instance.new("Highlight")
+                            highlight.Parent = child
+                        end
+                        highlight.FillColor = Color3.new(1, 0, 0)
+                        highlight.FillTransparency = 0.5
+                        highlight.OutlineColor = Color3.new(1, 0, 0)
+                        highlight.OutlineTransparency = 0
+                    elseif humanoid.Health > 1 then
+                        if not highlight then
+                            highlight = Instance.new("Highlight")
+                            highlight.Parent = child
+                        end
+                        highlight.FillColor = Color3.new(0, 1, 0)
+                        highlight.FillTransparency = 0.5
+                        highlight.OutlineColor = Color3.new(0, 1, 0)
+                        highlight.OutlineTransparency = 0
+                    else
+                        if highlight then
+                            highlight:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+RunService.Heartbeat:Connect(updateHighlights)
+end)
+
+local button1 = tab5.new("button", {
+    text = "Print Coordinates (F9)",
+})
+
+button1.event:Connect(function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+    local function printPlayerCoordinates()
+        local position = humanoidRootPart.Position
+        print("Current coordinates: X = " .. position.X .. ", Y = " .. position.Y .. ", Z = " .. position.Z)
+    end
+
+    printPlayerCoordinates()
+end)
+
+local Players = game:GetService("Players")
+
+local dropdown2 = nil
+
+local function createOrUpdateDropdown()
+    if dropdown2 then
+        dropdown2:Destroy()
+    end
+
+    dropdown2 = tab1.new("dropdown", {
+        text = "Tp to player",
+    })
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        dropdown2.new(player.Name)
+    end
+
+    dropdown2.event:Connect(function(name)
+        local player = Players:FindFirstChild(name)
+        if player then
+            local character = player.Character
+            if character then
+                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+                    local myCharacter = Players.LocalPlayer.Character
+                    if myCharacter then
+                        local myHumanoidRootPart = myCharacter:FindFirstChild("HumanoidRootPart")
+                        if myHumanoidRootPart then
+                            myHumanoidRootPart.CFrame = humanoidRootPart.CFrame
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+
+local function updateDropdownWithDelay()
+    wait(15)
+    createOrUpdateDropdown()
+end
+
+createOrUpdateDropdown()
+
+Players.PlayerAdded:Connect(updateDropdownWithDelay)
+Players.PlayerRemoving:Connect(updateDropdownWithDelay)
+
+local color1 = tab5.new("color", {
+    color = Color3.new(0, 0, 1),
+    text = "Worldcolor",
+})
+
+local function changeWorldColor(color)
+    local localPlayer = game.Players.LocalPlayer
+
+    -- Получаем корневой объект Workspace
+    local workspace = game.Workspace
+
+    for _, part in ipairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") and not part:IsDescendantOf(localPlayer.Character) then
+            part.Color = color
+        end
+    end
+end
+
+color1.event:Connect(function(color)
+    changeWorldColor(color)
+end)
+
+folder1.open()
