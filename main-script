@@ -1,4 +1,4 @@
-local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/pwrsk/dh/source"))()
+local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/pwrsk/dh/main/source"))()
 
 local window1 = engine.new({
     text = "pwrsk's hub<3",
