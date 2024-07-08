@@ -1,0 +1,41 @@
+local button1 = tab3.new("button", {
+    text = "Speed Indicator",
+})
+button1.event:Connect(function()
+-- Получаем игрока и его персонажа
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Получаем HumanoidRootPart
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Создаем GUI для отображения скорости
+local playerGui = player:WaitForChild("PlayerGui")
+local speedDisplay = Instance.new("ScreenGui")
+speedDisplay.Name = "SpeedDisplay"
+speedDisplay.ResetOnSpawn = true
+speedDisplay.Parent = playerGui
+
+local speedText = Instance.new("TextLabel")
+speedText.Name = "SpeedText"
+speedText.Size = UDim2.new(0, 200, 0, 50)
+speedText.Position = UDim2.new(0.5, -100, 0.1, 0)
+speedText.BackgroundTransparency = 1
+speedText.TextColor3 = Color3.new(1, 1, 1)
+speedText.TextStrokeTransparency = 0.5
+speedText.TextScaled = true
+speedText.Font = Enum.Font.GothamBold
+speedText.Text = "Speed: 0"
+speedText.Parent = speedDisplay
+
+-- Функция для обновления скорости
+local function updateSpeed()
+    local speed = humanoidRootPart.Velocity.Magnitude
+    speedText.Text = " " .. math.floor(speed)
+end
+
+-- Используем RunService для постоянного обновления скорости
+game:GetService("RunService").RenderStepped:Connect(function()
+    updateSpeed()
+end)
+end)
